@@ -62,14 +62,12 @@ cv2.destroyAllWindows()
 
 # Calibration
 ret_cal, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
-# dist = np.array([-0.273108973588676, 0.121899389259709, -0.00253897283705212, 0.000698093256818800, -0.0271579691163184])
-dist[0, 4] = 0
 
 # Check whether there is an undistortion directory
-if os.path.isdir(work_dir + '/undistort'):
+if os.path.isdir(work_dir + '/undistort_perspective'):
     pass
 else:
-    os.mkdir(work_dir + '/undistort')
+    os.mkdir(work_dir + '/undistort_perspective')
 
 # Undistortion
 for fname in images:
