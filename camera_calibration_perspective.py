@@ -92,7 +92,7 @@ for fname in images:
     # crop the image
     x, y, w1, h1 = roi
     dst = dst[y:y+h1, x:x+w1]
-    cv2.imwrite(work_dir + '/undistort/' + img_name.split(".")[0] + '_undistort.png', dst)
+    cv2.imwrite(work_dir + '/undistort_perspective/' + img_name.split(".")[0] + '_undistort.png', dst)
 
     # 2. Using remapping
     # undistort
@@ -102,7 +102,7 @@ for fname in images:
     # crop the image
     x, y, w2, h2 = roi
     dst = dst[y:y+h2, x:x+w2]
-    cv2.imwrite(work_dir + '/undistort/' + img_name.split(".")[0] + '_remapping.png', dst)
+    cv2.imwrite(work_dir + '/undistort_perspective/' + img_name.split(".")[0] + '_remapping.png', dst)
 
 # Reprojection error
 mean_error = 0
