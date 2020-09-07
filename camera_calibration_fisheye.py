@@ -4,6 +4,10 @@ import numpy as np
 import os
 import glob
 
+#########################################################
+# Camera calibration with extracted images from a video #
+#########################################################
+
 work_dir = "GoPro_video"
 
 CHECKERBOARD = (5,8)
