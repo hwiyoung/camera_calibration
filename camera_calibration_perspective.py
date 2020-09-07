@@ -7,7 +7,7 @@ import os
 cols = 8
 rows = 5
 
-work_dir = "GoPro"
+work_dir = "../00_data/camera_calibration/GoPro"
 
 # termination criteria
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
@@ -18,12 +18,14 @@ objp[:, :2] = np.mgrid[0:cols, 0:rows].T.reshape(-1, 2)
 objp *= 30
 
 # Arrays to store object points and image points from all the images.
+_img_shape = None
 objpoints = []  # 3d point in real world space
 imgpoints = []  # 2d points in image plane.
 
 images = glob.glob(work_dir + '/*.jpg')
 for fname in images:
     img = cv2.imread(fname)
+    _img_shape = img.shape[:2]
 
     ############################################
     # 1. Extract EXIF data from a image
@@ -39,6 +41,7 @@ for fname in images:
     ret, corners = cv2.findChessboardCorners(gray, (cols, rows), None)
 
     # If found, add object points, image points (after refining them)
+    print(fname, ret)
     if ret is True:
         objpoints.append(objp)
         corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
@@ -55,13 +58,19 @@ for fname in images:
         k = cv2.waitKey(500)
         # if k == 27:  # esc key
         #     cv2.destroyAllWindows()
-        print(fname)
-    else:
-        print("No corners in", fname)
 cv2.destroyAllWindows()
 
 # Calibration
 ret_cal, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
+
+N_OK = len(objpoints)
+K = np.zeros((3, 3))
+D = np.zeros((4, 1))
+
+print("Found " + str(N_OK) + " valid images for calibration")
+print("DIM=" + str(_img_shape[::-1]))
+print("K=np.array(" + str(mtx.tolist()) + ")")
+print("D=np.array(" + str(dist.tolist()) + ")")
 
 # Check whether there is an undistortion directory
 if os.path.isdir(work_dir + '/undistort_perspective'):

@@ -8,7 +8,7 @@ import glob
 # Camera calibration with extracted images from a video #
 #########################################################
 
-work_dir = "GoPro_video"
+work_dir = "../00_data/camera_calibration/GoPro_video"
 
 CHECKERBOARD = (5,8)
 subpix_criteria = (cv2.TERM_CRITERIA_EPS+cv2.TERM_CRITERIA_MAX_ITER, 30, 0.1)
@@ -47,7 +47,8 @@ for fname in images:
     # Find the chess board corners
     ret, corners = cv2.findChessboardCorners(gray, CHECKERBOARD, cv2.CALIB_CB_ADAPTIVE_THRESH+cv2.CALIB_CB_FAST_CHECK+cv2.CALIB_CB_NORMALIZE_IMAGE)
     # If found, add object points, image points (after refining them)
-    if ret == True:
+    print(fname, ret)
+    if ret:
         objpoints.append(objp)
         cv2.cornerSubPix(gray,corners,(3,3),(-1,-1),subpix_criteria)
         imgpoints.append(corners)
